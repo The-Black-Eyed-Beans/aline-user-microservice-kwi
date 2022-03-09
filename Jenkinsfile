@@ -29,7 +29,7 @@ pipeline {
 
         stage("SonarQube Code Analysis") {
             steps {
-                withSonarQubeEnv(installationName: 'us-west-1-sonar'){
+                withSonarQubeEnv(installationName: 'SonarQube-Server-kwi'){
                     sh "mvn sonar:sonar -Dsonar.projectName=${PROJECT}-kwi"
                 }
             }
