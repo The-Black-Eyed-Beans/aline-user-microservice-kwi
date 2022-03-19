@@ -19,7 +19,7 @@
     "Resources": {
         "AppService": {
             "Type": "AWS::ECS::Service",
-            "DependsOn": "AppListener",
+            "DependsOn": "ServiceListener",
             "Properties": {
                 "Cluster": "{{resolve:secretmanager:aline-kwi/dev/secrets/resources:SecretString:EcsCluster}}",
                 "DeploymentConfiguration": {
@@ -37,7 +37,7 @@
                             "Ref": "AppPort"
                         },
                         "TargetGroupArn": {
-                            "Ref": "AppTargetGroup"
+                            "Ref": "ServiceTargetGroup"
                         }
                     }
                 ],
