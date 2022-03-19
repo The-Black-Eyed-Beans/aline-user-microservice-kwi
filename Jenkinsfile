@@ -70,7 +70,7 @@ pipeline {
                 -- template-file deploy.json \
                 --profile keshaun \
                 --capabilities CAPABILITY_IAM \
-                --no-fail-on-empty-changeset
+                --no-fail-on-empty-changeset \
                 --parameter-overrides \
                     MicroserviceName=${PROJECT} \
                     AppPort=8070
