@@ -67,13 +67,13 @@ pipeline {
                 sh '''
                 aws cloudformation deploy \
                 --stack-name ${PROJECT}-kwi-stack \
-                -- template-file deploy.json \
+                --template-file deploy.json \
                 --profile keshaun \
                 --capabilities CAPABILITY_IAM \
                 --no-fail-on-empty-changeset \
                 --parameter-overrides \
                     MicroserviceName=${PROJECT} \
-                    AppPort=8070
+                    AppPort=8070 \
                     ImageTag=${COMMIT_HASH}
                 '''
             }
