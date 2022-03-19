@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         AWS_ID = credentials("AWS-ACCOUNT-ID")
-        REGION = credentials("BUCKET-KWI")
+        REGION = credentials("REGION-KWI")
         PROJECT = "user-microservice"
         COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
     }
