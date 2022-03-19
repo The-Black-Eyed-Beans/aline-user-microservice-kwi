@@ -151,7 +151,7 @@
         },
 
         "ServiceTargetGroup": {
-            "Type": "AWS::ElasticLoadBalancerV2::TargetGroup",
+            "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
             "Properties": {
                 "HealthCheckIntervalSeconds": 60,
                 "HealthCheckPath": "/health",
@@ -169,7 +169,7 @@
         },
 
         "ServiceListener": {
-            "Type": "AWS::ElasticLoadBalancerV2::Listener",
+            "Type": "AWS::ElasticLoadBalancingV2::Listener",
             "Properties": {
                 "DefaultActions": [
                     {
