@@ -21,7 +21,7 @@
             "Type": "AWS::ECS::Service",
             "DependsOn": "ServiceListener",
             "Properties": {
-                "Cluster": "{{resolve:secretmanager:aline-kwi/dev/secrets/resources:SecretString:EcsCluster}}",
+                "Cluster": "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:EcsCluster}}",
                 "DeploymentConfiguration": {
                     "MinimumHealthyPercent": 100,
                     "MaximumPercent": 200
@@ -45,11 +45,11 @@
                     "AwsvpcConfiguration": {
                         "AssignPublicIp": "ENABLED",
                         "Subnets": [
-                            "{{resolve:secretmanager:aline-kwi/dev/secrets/resources:SecretString:PrivateSubnet1}}",
-                            "{{resolve:secretmanager:aline-kwi/dev/secrets/resources:SecretString:PrivateSubnet2}}"
+                            "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:PrivateSubnet1}}",
+                            "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:PrivateSubnet2}}"
                         ],
                         "SecurityGroups": [
-                            "{{resolve:secretmanager:aline-kwi/dev/secrets/resources:SecretString:AppSecurityGroup}}"
+                            "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:AppSecurityGroup}}"
                         ]
                     }
                 },
@@ -76,39 +76,39 @@
                             },
                             {
                                 "Name": "APP_USER_ACCESS_KEY",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/user-credentials:SecretString:AccessKey}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/user-credentials:SecretString:AccessKey}}"
                             },
                             {
                                 "Name": "APP_USER_SECRET_KEY",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/user-credentials:SecretString:SecretKey}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/user-credentials:SecretString:SecretKey}}"
                             },
                             {
                                 "Name": "ENCRYPT_SECRET_KEY",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/user-credentials:SecretString:EncryptKey}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/user-credentials:SecretString:EncryptKey}}"
                             },
                             {
                                 "Name": "JWT_SECRET_KEY",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/user-credentials:SecretString:JWTSecretKey}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/user-credentials:SecretString:JWTSecretKey}}"
                             },
                             {
                                 "Name": "DB_USERNAME",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/db:SecretString:Username}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/db:SecretString:Username}}"
                             },
                             {
                                 "Name": "DB_PASSWORD",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/db:SecretString:Password}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/db:SecretString:Password}}"
                             },
                             {
                                 "Name": "DB_HOST",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/db:SecretString:Host}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/db:SecretString:Host}}"
                             },
                             {
                                 "Name": "DB_PORT",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/db:SecretString:Port}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/db:SecretString:Port}}"
                             },
                             {
                                 "Name": "DB_NAME",
-                                "Value": "{{resolve:secretmanager:aline-kwi/dev/secrets/db:SecretString:Name}}"
+                                "Value": "{{resolve:secretsmanager:aline-kwi/dev/secrets/db:SecretString:Name}}"
                             }
                         ],
                         "Essential": true,
@@ -142,7 +142,7 @@
                     }
                 ],
                 "Cpu": 512,
-                "ExecutionRoleArn": "{{resolve:secretmanager:aline-kwi/dev/secrets/resources:SecretString:TaskExecutionRole}}",
+                "ExecutionRoleArn": "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:TaskExecutionRole}}",
                 "Family": "aline-kwi",
                 "Memory": 2048,
                 "NetworkMode": "awsvpc",
@@ -164,7 +164,7 @@
                 },
                 "Protocol": "HTTP",
                 "TargetType": "ip",
-                "VpcId": "{{resolve:secretmanager:aline-kwi/dev/secrets/resources:SecretString:VpcId}}"
+                "VpcId": "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:VpcId}}"
             }
         },
 
@@ -179,7 +179,7 @@
                         }
                     }
                 ],
-                "LoadBalancerArn": "{{resolve:secretmanager:aline-kwi/dev/secrets/resources:SecretString:AppLoadBalancerArn}}",
+                "LoadBalancerArn": "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:AppLoadBalancerArn}}",
                 "Port": {
                     "Ref": "AppPort"
                 },
