@@ -68,6 +68,7 @@ pipeline {
                 aws cloudformation deploy \
                 --stack-name ${PROJECT}-kwi-stack \
                 -- template-file deploy.json \
+                --profile keshaun \
                 --capabilities CAPABILITY_IAM \
                 --no-fail-on-empty-changeset
                 --parameter-overrides \
