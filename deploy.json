@@ -31,7 +31,7 @@
                 "LoadBalancers": [
                     {
                         "ContainerName": {
-                            "Fn::Sub": "${MicroserviceName}-kwi"
+                            "Fn::Sub": "${MicroserviceName}"
                         },
                         "ContainerPort": {
                             "Ref": "AppPort"
@@ -118,8 +118,8 @@
                         "LogConfiguration": {
                             "LogDriver": "awslogs",
                             "Options": {
-                                "awslog-group": {
-                                    "Fn::Sub": "aline-kwi/${MicroserviceName}"
+                                "awslogs-group": {
+                                    "Fn::Sub": "/ecs/aline-kwi/${MicroserviceName}"
                                 },
                                 "awslogs-region": {
                                     "Ref": "AWS::Region"
@@ -127,11 +127,13 @@
                                 "awslogs-stream-prefix": {
                                     "Fn::Sub": "${MicroserviceName}-kwi"
                                 },
-                                "awslogs-create-group": true
+                                "awslogs-create-group": "true"
                             }
                         },
                         "Memory": 2048,
-                        "Name": "${MicroserviceName}-kwi",
+                        "Name": {
+                            "Fn::Sub": "${MicroserviceName}"
+                        },
                         "PortMappings": [
                             {
                                 "ContainerPort": {
@@ -143,10 +145,13 @@
                 ],
                 "Cpu": 512,
                 "ExecutionRoleArn": "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:TaskExecutionRole}}",
-                "Family": "aline-kwi",
+                "Family": {
+                    "Fn::Sub": "${MicroserviceName}-kwi"
+                },
                 "Memory": 2048,
                 "NetworkMode": "awsvpc",
-                "RequiredCompatibilities": ["FARGATE"]
+                "RequiresCompatibilities": ["FARGATE"],
+                "TaskRoleArn": "{{resolve:secretsmanager:aline-kwi/dev/secrets/resources:SecretString:TaskRole}}"
             }
         },
 
