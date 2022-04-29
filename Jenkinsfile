@@ -16,17 +16,23 @@ pipeline {
         PROJECT = "user-microservice"
         COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
         APP_PORT = 8070
+        JFROG_MAVEN_PASS = credentials("ARTIFACTORY-MAVEN-PASSWORD-KWI")
+        JFROG_URL = credentials("ARTIFACTORY-URL-KWI")
+        JFROG_USER = credentials("ARTIFACTORY-USER-KWI")
+        JFROG_PASS = credentials("ARTIFACTORY-PASSWORD-KWI")
         DEPLOYMENT = "EKS"
     }
 
     stages {
-        stage("Test") {
+        stage("Git Setup") {
             steps {
-                echo "Initializing Git Submodule..."
                 sh "git submodule init"
                 sh "git submodule update"
-
-                echo "Running Maven Test..."
+            }
+        }
+        
+        stage("Test") {
+            steps {
                 sh "mvn clean test"
             }
         }
@@ -69,6 +75,21 @@ pipeline {
                 echo "Building Docker Image with latest tag..."
                 sh "docker tag ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com/${PROJECT}-kwi:${COMMIT_HASH} ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com/${PROJECT}-kwi:latest"
                 sh "docker push ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com/${PROJECT}-kwi:latest"
+            }
+        }
+
+        stage("Push to Artifactory") {
+            steps {
+                echo "Logging in to Artifactory..."
+                sh "docker login -u ${JFROG_USER} -p ${JFROG_PASS} ${JFROG_URL}"
+
+                echo "Pushing Docker Images to Artifactory..."
+                sh "docker tag ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com/${PROJECT}-kwi:${COMMIT_HASH} ${JFROG_URL}/docker/${PROJECT}:${COMMIT_HASH}"
+                sh "docker tag ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com/${PROJECT}-kwi:latest ${JFROG_URL}/docker/${PROJECT}:latest"
+                sh "docker push -a ${JFROG_URL}/docker/${PROJECT}"
+
+                echo "Pushing JAR files to Artifactory..."
+                sh "mvn deploy -DskipTests"
             }
         }
 
@@ -124,6 +145,8 @@ pipeline {
         always {
             sh "docker image rm ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com/${PROJECT}-kwi:${COMMIT_HASH}"
             sh "docker image rm ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com/${PROJECT}-kwi:latest"
+            sh "docker image rm ${JFROG_URL}/docker/${PROJECT}:${COMMIT_HASH}"
+            sh "docker image rm ${JFROG_URL}/docker/${PROJECT}:latest"
             sh "mvn clean"
         }
     }
